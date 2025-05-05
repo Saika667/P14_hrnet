@@ -1,13 +1,14 @@
 import Table from "../../components/table/Table"
-import { Page, Title, Wrapper } from "../../utils/Atoms"
+import { Page } from "../../utils/Atoms"
+import { WrapperElt, Title } from "./EmployeesPageStyle"
 
 function EmployeesPage () {
     return (
         <Page>
-            <Wrapper>
+            <WrapperElt>
                 <Title>Current Employees</Title>
                 <Table />
-            </Wrapper>
+            </WrapperElt>
         </Page>
     )
 }
