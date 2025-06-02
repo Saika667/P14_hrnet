@@ -1,11 +1,11 @@
 import Users from "../../assets/users.svg?react"
-import { Button } from "./HeaderButtonStyle"
+import { Button, Text } from "./HeaderButtonStyle"
 
 function HeaderButton () {
     return (
         <Button to="/employees">
             <Users />
-            View Current Employees
+            <Text>View Current Employees</Text>
         </Button>
     )
 }

@@ -1,6 +1,6 @@
 import { ErrorMessage, InputContainer, InputElt, Label } from "./InputStyle"
 
-function Input ({ label, placeholder, type, id, inputValue, change, errorMessage, classname }) {
+function Input ({ label, placeholder, type, id, inputValue, change, errorMessage, classname, onkeydown }) {
     return (
         <InputContainer className={ classname }>
             <Label>{ label }</Label>
@@ -10,7 +10,8 @@ function Input ({ label, placeholder, type, id, inputValue, change, errorMessage
                 type={ type }
                 id={ id }
                 value={ inputValue }
-                onChange={ (e) => change(e.target.value)}
+                onChange={ (e) => change(e.target.value) }
+                onKeyDown={ onkeydown }
             />
             <ErrorMessage>{ errorMessage }</ErrorMessage>
         </InputContainer>

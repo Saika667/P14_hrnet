@@ -36,8 +36,19 @@ const initialState = {
             id: 'form-zipcode',
             value: '',
             error: ''
+        },
+        {
+            id: 'form-state',
+            value: 'Alabama',
+            error: ''
+        },
+        {
+            id: 'form-department',
+            value: 'Sales',
+            error: ''
         }
-    ]
+    ],
+    employees: []
 }
 
 export const userSlice = createSlice({
@@ -60,9 +71,15 @@ export const userSlice = createSlice({
                 }
             });
         },
-        resetForm: () => initialState,
+        resetForm: (state) => {
+            state.employeeForm = initialState.employeeForm
+        },
+        createEmployee: (state, { payload }) => {
+            const employee = payload
+            state.employees.push(employee)
+        }
     }
 })
 
-export const { setInputValue, setInputError, resetForm } = userSlice.actions
+export const { setInputValue, setInputError, resetForm, createEmployee } = userSlice.actions
 export default userSlice.reducer

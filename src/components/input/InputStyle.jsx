@@ -8,6 +8,13 @@ export const InputContainer = styled.div`
     &.half {
         width: 49%;
     }
+
+    @media only screen and (max-width : 768px) {
+        &.half {
+            width: 100%;
+            margin: 0;
+        }
+    }
 `
 
 export const Label = styled.label`
@@ -28,5 +35,7 @@ export const InputElt = styled.input`
 `
 
 export const ErrorMessage = styled.span`
-
+    color: red;
+    font-style: italic;
+    padding-top: 1rem;
 `

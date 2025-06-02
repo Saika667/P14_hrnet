@@ -8,6 +8,12 @@ export const Wrapper = styled.div`
     &.half {
         width: 49%;
     }
+
+    @media only screen and (max-width : 768px) {
+        &.half {
+            width: 100%;
+        }
+    }
 `
 
 export const Label = styled.label`
@@ -28,29 +34,5 @@ export const Select = styled.select`
 `
 
 export const Option = styled.option`
-
-`
-
-export const InputWrapper = styled.div`
-
-`
-
-export const Input = styled.input`
-
-`
-
-export const ImageContainer = styled.div`
-
-`
-
-export const PorposalsContainer = styled.div`
-
-`
-
-export const Proposal = styled.div`
-
-`
-
-export const Text = styled.span`
 
 `

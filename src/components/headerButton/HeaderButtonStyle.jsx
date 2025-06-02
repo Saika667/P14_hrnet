@@ -10,7 +10,6 @@ export const Button = styled(Link)`
     color: #ffffff;
     padding: .5rem 1rem;
     border-radius: 5rem;
-    font-weight: 800;
     text-decoration: none;
     
     & svg {
@@ -18,4 +17,17 @@ export const Button = styled(Link)`
         height: 2rem;
         padding-right: 1rem;
     }
+`
+
+export const Text = styled.span`
+    font-weight: 800;
+    
+    @media only screen and (max-width : 768px) {
+        width: 75px;
+        text-align: center;
+        font-size: .8rem;
+    }
+       
+    
+
 `

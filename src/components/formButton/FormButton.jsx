@@ -1,8 +1,8 @@
 import { Button } from "./FormButtonStyle"
 
-function FormButton () {
+function FormButton ({ onclick }) {
     return (
-        <Button>
+        <Button onClick={ onclick }>
             Save
         </Button>
     )

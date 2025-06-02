@@ -1,25 +1,67 @@
 import { useDispatch, useSelector } from "react-redux"
 import Input from "../input/Input"
 import { AdressContainer, ButtonContainer, Form, FormTitle, InputDuoContainer, UserContainer } from "./EmployeeFormStyle"
-import { setInputValue } from "../../feature/user.slice"
+import { resetForm, setInputError, setInputValue, createEmployee as createEmployeeSlice } from "../../feature/user.slice"
 import SelectMenu from "../selectMenu/SelectMenu"
 import { statesData, departmentData } from "../../data/data"
 import FormButton from "../formButton/FormButton"
+import { setIsOpen } from "../../feature/modal.slice"
 
 function EmployeeForm () {
     const storeInputs = useSelector(({ user }) => user.employeeForm)
+    const employeesList = useSelector(({ user }) => user.employees)
     const dispatch = useDispatch()
-    //TODO : remplacer l'input date of birth, start date par un calendrier de sélection de date
+
     const getInputValue = (inputId) => {
         return storeInputs.find(storeInput => storeInput.id === inputId).value
     }
     
+    const getErrorValue = (inputId) => {
+        return storeInputs.find(storeInput => storeInput.id === inputId).error
+    }
+
     const handleInputChange = (inputId, value) => {
         dispatch(setInputValue({ id: inputId, value: value }))
     }
 
-    const createEmployee = () => {
-        console.log('create')
+    const createEmployee = (e) => {
+        e.preventDefault()
+
+        let hasError = false
+        let newEmployee = {}
+
+        storeInputs.forEach(obj => {
+            if (obj.value === "") {
+                hasError = true
+                dispatch(setInputError({ id: obj.id, value: "Le champ ne peut pas être vide." }))
+            } else {
+                dispatch(setInputError({ id: obj.id, value: "" }))
+            }
+        })
+
+        if (hasError) {
+            return
+        }
+
+        storeInputs.forEach(obj => {
+            const inputKey = obj.id.replace('form-', '')
+
+            if (inputKey === "birth" || inputKey === "start") {
+                const [year, month, day] = obj.value.split("-")
+                const newDate = `${ day }-${ month }-${ year }`
+                newEmployee[inputKey] = newDate
+            } else {
+                newEmployee[inputKey] = obj.value
+            }
+        })
+        
+        const lastId = employeesList.length > 0 ? employeesList[employeesList.length - 1].id : 0
+        newEmployee.id = lastId + 1
+        dispatch(createEmployeeSlice(newEmployee))
+
+        dispatch(setIsOpen(true))
+
+        dispatch(resetForm())
     }
 
     return (
@@ -33,6 +75,12 @@ function EmployeeForm () {
                         inputValue={ getInputValue("form-first-name") }
                         change={ (value) => handleInputChange('form-first-name', value) }
                         classname="half"
+                        onkeydown={ (e) => {
+                            if (e.key === "Enter") {
+                                createEmployee(e)
+                            }
+                        }}
+                        errorMessage={ getErrorValue("form-first-name") }
                     />
 
                     <Input
@@ -42,6 +90,12 @@ function EmployeeForm () {
                         inputValue={ getInputValue("form-last-name") }
                         change={ (value) => handleInputChange('form-last-name', value) }
                         classname="half"
+                        onkeydown={ (e) => {
+                            if (e.key === "Enter") {
+                                createEmployee(e)
+                            }
+                        }}
+                        errorMessage={ getErrorValue("form-last-name") }
                     />
                 </InputDuoContainer>
 
@@ -53,6 +107,12 @@ function EmployeeForm () {
                         inputValue={ getInputValue("form-birth") }
                         change={ (value) => handleInputChange('form-birth', value) }
                         classname="half"
+                        onkeydown={ (e) => {
+                            if (e.key === "Enter") {
+                                createEmployee(e)
+                            }
+                        }}
+                        errorMessage={ getErrorValue("form-birth") }
                     />
 
                     <Input
@@ -62,12 +122,18 @@ function EmployeeForm () {
                         inputValue={ getInputValue("form-start") }
                         change={ (value) => handleInputChange('form-start', value) }
                         classname="half"
+                        onkeydown={ (e) => {
+                            if (e.key === "Enter") {
+                                createEmployee(e)
+                            }
+                        }}
+                        errorMessage={ getErrorValue("form-start") }
                     />
                 </InputDuoContainer>
             </UserContainer>
 
             <AdressContainer>
-                <FormTitle>Adress</FormTitle>
+                <FormTitle>Address</FormTitle>
 
                 <Input
                     id="form-street"
@@ -75,6 +141,12 @@ function EmployeeForm () {
                     type="text"
                     inputValue={ getInputValue("form-street") }
                     change={ (value) => handleInputChange('form-street', value) }
+                    onkeydown={ (e) => {
+                        if (e.key === "Enter") {
+                            createEmployee(e)
+                        }
+                    }}
+                    errorMessage={ getErrorValue("form-street") }
                 />
 
                 <Input
@@ -83,6 +155,12 @@ function EmployeeForm () {
                     type="text"
                     inputValue={ getInputValue("form-city") }
                     change={ (value) => handleInputChange('form-city', value) }
+                    onkeydown={ (e) => {
+                        if (e.key === "Enter") {
+                            createEmployee(e)
+                        }
+                    }}
+                    errorMessage={ getErrorValue("form-city") }
                 />
                 <InputDuoContainer>
                     <SelectMenu
@@ -90,6 +168,8 @@ function EmployeeForm () {
                         label="State"
                         id="form-state"
                         classname="half"
+                        selectValue={ getInputValue("form-state") }
+                        change={ (value) => handleInputChange("form-state", value) }
                     />
 
                     <Input
@@ -99,6 +179,12 @@ function EmployeeForm () {
                         inputValue={ getInputValue("form-zipcode") }
                         change={ (value) => handleInputChange('form-zipcode', value) }
                         classname="half"
+                        onkeydown={ (e) => {
+                            if (e.key === "Enter") {
+                                createEmployee(e)
+                            }
+                        }}
+                        errorMessage={ getErrorValue("form-zipcode") }
                     />
                 </InputDuoContainer>
             </AdressContainer>
@@ -108,11 +194,13 @@ function EmployeeForm () {
             <SelectMenu
                 data={ departmentData }
                 label="State"
-                id="form-state"
+                id="form-department"
+                selectValue={ getInputValue("form-department") }
+                change={ (value) => handleInputChange("form-department", value) }
             />
 
             <ButtonContainer>
-                <FormButton />
+                <FormButton onclick={ (e) => createEmployee(e) }/>
             </ButtonContainer>
         </Form>
     )

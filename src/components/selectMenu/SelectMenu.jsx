@@ -1,11 +1,10 @@
-import { ImageContainer, Input, InputWrapper, Label, PorposalsContainer, Proposal, Wrapper, Text, Select, Option } from "./SelectMenuStyle"
+import { Label, Wrapper, Select, Option } from "./SelectMenuStyle"
 
-function SelectMenu ({ data, label, name, id, classname }) {
-    console.log(data)
+function SelectMenu ({ data, label, name, id, classname, selectValue, change }) {
     return (
         <Wrapper className={ classname }>
-            <Label>{ label }</Label>
-            <Select name={ name } id={ id }>
+            <Label htmlFor={ id }>{ label }</Label>
+            <Select name={ name } id={ id } value={ selectValue } onChange={ (e) => change(e.target.value) }>
                 { data.map((text, index) => (
                     <Option key={ index } value={ text }>
                         { text }

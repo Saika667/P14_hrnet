@@ -33,4 +33,8 @@ export const ButtonContainer = styled.div`
 export const InputDuoContainer = styled.div`
     display: flex;
     justify-content: space-between;
+
+    @media only screen and (max-width : 768px) {
+        flex-direction: column;
+    }
 `

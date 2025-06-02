@@ -3,6 +3,11 @@ import { Wrapper } from "../../utils/Atoms";
 
 export const WrapperElt = styled(Wrapper)`
     width: 80%;
+
+    @media only screen and (max-width : 768px) {
+        width: 95%;
+        padding: 1rem;
+    }
 `
 
 export const Title = styled.h2`
